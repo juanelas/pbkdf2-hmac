@@ -1,6 +1,6 @@
 {
   "name": "pbkdf2-hmac",
-  "version": "0.10.0",
+  "version": "1.0.0",
   "description": "PBKDF2 with HMAC (with SHA-1, SHA-256, SHA-384 or SHA-512) as the PRF function for Node.js and browsers.",
   "keywords": [
     "pbkdf2",
