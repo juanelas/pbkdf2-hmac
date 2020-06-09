@@ -29,13 +29,13 @@ Import your module as :
    ```
  - JavaScript native or TypeScript project (including React and Angular)
    ```javascript
-   import * as {{PKG_CAMELCASE}} from '{{PKG_NAME}}'
+   import {{PKG_CAMELCASE}} from '{{PKG_NAME}}'
    ... // your code here
    ```
  - JavaScript native browser ES module
    ```html
    <script type="module">
-      import * as {{PKG_CAMELCASE}} from 'lib/index.browser.bundle.mod.js'  // Use you actual path to the broser mod bundle
+      import {{PKG_CAMELCASE}} from 'lib/index.browser.bundle.mod.js'  // Use your actual path to the broser mod bundle
       ... // your code here
     </script>
    ```
@@ -43,7 +43,7 @@ Import your module as :
    ```html
    <head>
      ...
-     <script src="../../lib/index.browser.bundle.iife.js"></script> <!-- Use you actual path to the browser bundle -->
+     <script src="../../lib/index.browser.bundle.iife.js"></script> <!-- Use your actual path to the browser bundle -->
    </head>
    <body>
      ...
