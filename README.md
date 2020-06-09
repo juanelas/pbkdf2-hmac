@@ -71,9 +71,7 @@ PBKDF2 following RFC 2898 using HMAC (with SHA-1, SHA-256, SHA-384, SHA-512) as 
 
 * [pbkdf2-hmac](#module_pbkdf2-hmac)
     * [~TypedArray](#module_pbkdf2-hmac..TypedArray) : <code>Int8Array</code> \| <code>Uint8Array</code> \| <code>Uint8ClampedArray</code> \| <code>Int16Array</code> \| <code>Uint16Array</code> \| <code>Int32Array</code> \| <code>Uint32Array</code> \| <code>Float32Array</code> \| <code>Float64Array</code> \| <code>BigInt64Array</code> \| <code>BigUint64Array</code>
-    * [~concat(...arrs)](#module_pbkdf2-hmac..concat)
     * [~pbkdf2Hmac(P, S, c, dkLen, hash)](#module_pbkdf2-hmac..pbkdf2Hmac) ⇒ <code>Promise.&lt;ArrayBuffer&gt;</code>
-    * [~xorMe(arr1, arr2)](#module_pbkdf2-hmac..xorMe)
 
 <a name="module_pbkdf2-hmac..TypedArray"></a>
 
@@ -81,17 +79,6 @@ PBKDF2 following RFC 2898 using HMAC (with SHA-1, SHA-256, SHA-384, SHA-512) as 
 A TypedArray object describes an array-like view of an underlying binary data buffer.
 
 **Kind**: inner typedef of [<code>pbkdf2-hmac</code>](#module_pbkdf2-hmac)  
-<a name="module_pbkdf2-hmac..concat"></a>
-
-#### pbkdf2-hmac~concat(...arrs)
-Concatenates several UInt8Array
-
-**Kind**: inner method of [<code>pbkdf2-hmac</code>](#module_pbkdf2-hmac)  
-
-| Param | Type |
-| --- | --- |
-| ...arrs | <code>Uint8Array</code> | 
-
 <a name="module_pbkdf2-hmac..pbkdf2Hmac"></a>
 
 #### pbkdf2-hmac~pbkdf2Hmac(P, S, c, dkLen, hash) ⇒ <code>Promise.&lt;ArrayBuffer&gt;</code>
@@ -107,16 +94,4 @@ used with one of the SHA algorithms as the hash function for the HMAC
 | c | <code>number</code> |  | iteration count, a positive integer |
 | dkLen | <code>number</code> |  | intended length in octets of the derived key |
 | hash | <code>string</code> | <code>&quot;SHA-256&quot;</code> | hash function to use for the HMAC. One of 'SHA-1', 'SHA-256', 'SHA-384', 'SHA-512' |
-
-<a name="module_pbkdf2-hmac..xorMe"></a>
-
-#### pbkdf2-hmac~xorMe(arr1, arr2)
-arr2 is xor-ed to arr1
-
-**Kind**: inner method of [<code>pbkdf2-hmac</code>](#module_pbkdf2-hmac)  
-
-| Param | Type |
-| --- | --- |
-| arr1 | <code>TypedArray</code> | 
-| arr2 | <code>TypedArray</code> | 
 

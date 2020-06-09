@@ -186,11 +186,6 @@ async function _pbkdf2 (P, S, c, dkLen, hash) {
   return concat(...T)
 }
 
-/**
- * Concatenates several UInt8Array
- *
- * @param  {...Uint8Array} arrs
- */
 function concat (...arrs) {
   // sum of individual array lengths
   const totalLength = arrs.reduce((acc, value) => acc + value.length, 0)
@@ -210,11 +205,6 @@ function concat (...arrs) {
   return result
 }
 
-/**
- * arr2 is xor-ed to arr1
- * @param  {TypedArray} arr1
- * @param  {TypedArray} arr2
- */
 function xorMe (arr1, arr2) {
   for (let i = 0; i < arr1.length; i++) {
     arr1[i] ^= arr2[i]
