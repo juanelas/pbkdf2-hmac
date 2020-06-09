@@ -4,7 +4,9 @@
 
 # {{PKG_NAME}}
 
-*THIS PACKAGE IS NOT YET READY. I NEED TO FINISH IT FIRST*
+PBKDF2 with HMAC (with SHA-1, SHA-256, SHA-384 or SHA-512) as the PRF function for Node.js and browsers.
+
+Node version internally uses Node's `crypto.pbkdf2()`, the browser version defaults to the subtle crypto native implementation, although a custom implementation is provided just in case the native one fails. This is nowadays (Jun, 2020) the case of Firefox, whose [PBKDF2 implementation can't derive more than 2048 bits](https://github.com/mdn/sprints/issues/3278).
 
 ## Installation
 
@@ -51,11 +53,12 @@ Import your module as :
    </body>
    ```
 
-An example of usage could be:
+An example of usage could be (from an async function):
 
 ```javascript
-YOUR JAVASCRIPT EXAMPLE CODE HERE
+const derivedKey = await {{PKG_CAMELCASE}}('password', 'salt', 1000, 32)
 ```
+See the `test` for more examples
 
 ## API reference documentation
 
