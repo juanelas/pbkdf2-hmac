@@ -13,10 +13,12 @@ const glob = require('glob')
 const processedArgs = processArgs(process.argv.slice(2))
 
 // Now we can run a script and invoke a callback when complete, e.g.
-runScript(path.join(rootDir, 'node_modules/mocha/bin/mocha'), processArgs(processedArgs))
+runScript(path.join(rootDir, 'node_modules/mocha/bin/mocha'), processedArgs)
 
 function processArgs (args) {
   args = process.argv.slice(2).map(arg => {
+    // Let us first remove surrounding quotes in string (it gives issues in windows)
+    arg = arg.replace(/^['"]/, '').replace(/['"]$/, '')
     const filenames = glob.sync(arg, { cwd: rootDir, matchBase: true })
     if (filenames.length > 0) {
       return filenames.map(file => {
