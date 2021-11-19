@@ -56,11 +56,11 @@ jobs:
     - uses: EndBug/version-check@v1
       id: check
     
-    # - if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.check.outputs.changed == 'true'
-    #   name: send report to coveralls.io
-    #   uses: coverallsapp/github-action@master
-    #   with:
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    - if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.check.outputs.changed == 'true'
+      name: send report to coveralls.io
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
     
     - if: github.event_name == 'push' && github.ref == 'refs/heads/master' && steps.check.outputs.changed == 'true'
       run: npm publish --access public
