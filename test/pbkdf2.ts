@@ -5,7 +5,7 @@ import { vectors } from '../test-vectors/pbkdf2'
 describe('testing pbkdf2', function () {
   this.timeout(360000)
   for (const vector of vectors) {
-    describe(`${vector.comment ?? ''} : ${JSON.stringify(vector.input)}`, function () {
+    describe(`${vector.comment || ''} : ${JSON.stringify(vector.input)}`, function () { // eslint-disable-line
       if ('error' in vector) {
         it(`should be rejected because of ${vector.error?.toString() ?? 'unknown reason'}`, async function () {
           try {
