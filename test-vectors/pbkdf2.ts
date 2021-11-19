@@ -1,6 +1,6 @@
-const bigintConversion = require('bigint-conversion')
+import * as bigintConversion from 'bigint-conversion'
 
-module.exports = [
+export const vectors = [
   {
     comment: 'Bad hash algorithm',
     input: {
@@ -20,7 +20,7 @@ module.exports = [
       S: 'salt',
       c: 1,
       dkLen: 64,
-      hash: 'MD5'
+      hash: 'SHA-256'
     },
     output: '55ac046e56e3089fec1691c22544b605f94185216dde0465e68b9d57c20dacbc49ca9cccf179b645991664b39d77ef317c71b845b1e30bd509112041d3a19783',
     error: RangeError
@@ -32,7 +32,7 @@ module.exports = [
       S: 123,
       c: 1,
       dkLen: 64,
-      hash: 'MD5'
+      hash: 'SHA-256'
     },
     output: '55ac046e56e3089fec1691c22544b605f94185216dde0465e68b9d57c20dacbc49ca9cccf179b645991664b39d77ef317c71b845b1e30bd509112041d3a19783',
     error: RangeError
@@ -105,7 +105,7 @@ module.exports = [
   },
   {
     input: {
-      P: new ArrayBuffer(),
+      P: new ArrayBuffer(0),
       S: new TextEncoder().encode('salt'),
       c: 1024,
       dkLen: 32,
@@ -116,7 +116,7 @@ module.exports = [
   {
     input: {
       P: 'password',
-      S: new ArrayBuffer(),
+      S: new ArrayBuffer(0),
       c: 1024,
       dkLen: 32,
       hash: 'SHA-256'

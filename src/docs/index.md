@@ -1,10 +1,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![Node.js CI](https://github.com/juanelas/pbkdf2-hmac/workflows/Node.js%20CI/badge.svg)](https://github.com/juanelas/pbkdf2-hmac/actions?query=workflow%3A%22Node.js+CI%22)
-[![Coverage Status](https://coveralls.io/repos/github/juanelas/pbkdf2-hmac/badge.svg?branch=master)](https://coveralls.io/github/juanelas/pbkdf2-hmac?branch=master)
+{{GITHUB_ACTIONS_BADGES}}
 
-# pbkdf2-hmac
+# {{PKG_NAME}}
 
 PBKDF2 with HMAC (with SHA-1, SHA-256, SHA-384 or SHA-512) as the PRF function for Node.js and browsers.
 
@@ -12,32 +11,32 @@ Node version internally uses Node's `crypto.pbkdf2()`, the browser version defau
 
 ## Usage
 
-`pbkdf2-hmac` can be imported to your project with `npm`:
+`{{PKG_NAME}}` can be imported to your project with `npm`:
 
 ```console
-npm install pbkdf2-hmac
+npm install {{PKG_NAME}}
 ```
 
 Then either require (Node.js CJS):
 
 ```javascript
-const pbkdf2Hmac = require('pbkdf2-hmac')
+const {{PKG_CAMELCASE}} = require('{{PKG_NAME}}')
 ```
 
 or import (JavaScript ES module):
 
 ```javascript
-import pbkdf2Hmac from 'pbkdf2-hmac'
+import {{PKG_CAMELCASE}} from '{{PKG_NAME}}'
 ```
 
 The appropriate version for browser or node is automatically exported.
 
-You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/master/dist/bundles/iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/master/dist/bundles/esm.min.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/master/dist/bundles/umd.js) and manually add it to your project, or, if you have already installed `pbkdf2-hmac` in your project, just get the bundles from `node_modules/pbkdf2-hmac/dist/bundles/`.
+You can also download the {{IIFE_BUNDLE}}, the {{ESM_BUNDLE}} or the {{UMD_BUNDLE}} and manually add it to your project, or, if you have already installed `{{PKG_NAME}}` in your project, just get the bundles from `node_modules/{{PKG_NAME}}/dist/bundles/`.
 
 An example of usage could be:
 
 ```typescript
-const derivedKey = await pbkdf2Hmac('password', 'salt', 1000, 32)
+const derivedKey = await {{PKG_CAMELCASE}}('password', 'salt', 1000, 32)
 ```
 
 See the `test` for more examples.
