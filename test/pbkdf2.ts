@@ -7,7 +7,7 @@ describe('testing pbkdf2', function () {
   for (const vector of vectors) {
     describe(`${vector.comment || ''} : ${JSON.stringify(vector.input)}`, function () { // eslint-disable-line
       if ('error' in vector) {
-        it(`should be rejected because of ${vector.error?.toString() || 'unknown reason'}`, async function () { // eslint-disable-line
+        it(`should be rejected because of ${(vector.error !== undefined) ? vector.error.toString() : 'unknown reason'}`, async function () {
           try {
             // @ts-expect-error
             await _pkg(vector.input.P, vector.input.S, vector.input.c, vector.input.dkLen, vector.input.hash)
