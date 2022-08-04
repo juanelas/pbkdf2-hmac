@@ -9,10 +9,16 @@ node_modules
 # Output of 'npm pack'
 *.tgz
 
-# MYC output
-.nyc_output
+# Coverage
 coverage
 
-# Temporal files
+# Environment files
+*.env
+
+# Test temporal files
 .mocha-ts
+.tsconfig.json
 .dst
+
+# docs temporal files
+.nojekyll

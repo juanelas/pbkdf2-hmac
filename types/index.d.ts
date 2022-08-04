@@ -9,8 +9,9 @@
 declare type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array | BigInt64Array | BigUint64Array;
 export declare type HashAlg = 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512';
 /**
-  * The PBKDF2-HMAC function used below denotes the PBKDF2 algorithm (RFC2898)
-  * used with one of the SHA algorithms as the hash function for the HMAC
+  * Derives a key using using PBKDF2-HMAC algorithm
+  * PBKDF2 (RFC 2898) using HMAC (with SHA-1, SHA-256, SHA-384, SHA-512) as
+  * the PRF (RFC2898)
   *
   * @param P - a unicode string with a password
   * @param S - a salt. This should be a random or pseudo-random value of at least 16 bytes. You can easily get one with crypto.getRandomValues(new Uint8Array(16))

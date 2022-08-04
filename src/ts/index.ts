@@ -26,8 +26,9 @@ const HASHALGS: HashAlgs = { // length in octets of the output of the chosen PRF
 }
 
 /**
-  * The PBKDF2-HMAC function used below denotes the PBKDF2 algorithm (RFC2898)
-  * used with one of the SHA algorithms as the hash function for the HMAC
+  * Derives a key using using PBKDF2-HMAC algorithm
+  * PBKDF2 (RFC 2898) using HMAC (with SHA-1, SHA-256, SHA-384, SHA-512) as
+  * the PRF (RFC2898)
   *
   * @param P - a unicode string with a password
   * @param S - a salt. This should be a random or pseudo-random value of at least 16 bytes. You can easily get one with crypto.getRandomValues(new Uint8Array(16))
@@ -72,10 +73,12 @@ export default function pbkdf2Hmac (P: string | ArrayBuffer | TypedArray | DataV
       )
     } else {
       const nodeAlg = hash.toLowerCase().replace('-', '')
-      require('crypto').pbkdf2(P as TypedArray | DataView, S as Uint8Array, c, dkLen, nodeAlg, (err: Error | null, derivedKey: Buffer) => { // eslint-disable-line
-        if (err != null) reject(err)
-        else resolve(derivedKey.buffer)
-      })
+      import ('crypto').then(crypto => {
+        crypto.pbkdf2(P as TypedArray | DataView, S as Uint8Array, c, dkLen, nodeAlg, (err: Error | null, derivedKey: Buffer) => {
+          if (err != null) reject(err)
+          else resolve(derivedKey.buffer)
+        })
+      }).catch(reject)
     }
   })
 }

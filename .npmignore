@@ -20,12 +20,15 @@ npm-debug.log*
 # IntelliJ
 .idea
 
-# MYC output
-.nyc_output
+# Coverage
 coverage
 
 # GitHub
 .github
+
+# GitLab
+.gitlab-ci.yml
+.gitlab-ci.yaml
 
 # tsconfig
 tsconfig.json
@@ -33,9 +36,19 @@ tsconfig.json
 # SRC docs
 src/docs
 
-# temporal files
+# Test temporal files
 .mocha-ts
 .dst
+.tsconfig.json
+
+# docs temporal files
+.nojekyll
+
+# code of conduct
+CODE_OF_CONDUCT.md
 
 # TODO
 TO-DO.txt
+
+# benchmarks
+benchmark
