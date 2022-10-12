@@ -8,25 +8,25 @@
   'use strict'
 
   /** Used to determine if values are of the language type `Object`. */
-  var objectTypes = {
+  const objectTypes = {
     function: true,
     object: true
   }
 
   /** Used as a reference to the global object. */
-  var root = (objectTypes[typeof window] && window) || this
+  let root = (objectTypes[typeof window] && window) || this
 
   /** Backup possible global object. */
-  var oldRoot = root
+  const oldRoot = root
 
   /** Detect free variable `exports`. */
-  var freeExports = objectTypes[typeof exports] && exports
+  const freeExports = objectTypes[typeof exports] && exports
 
   /** Detect free variable `module`. */
-  var freeModule = objectTypes[typeof module] && module && !module.nodeType && module
+  const freeModule = objectTypes[typeof module] && module && !module.nodeType && module
 
   /** Detect free variable `global` from Node.js or Browserified code and use it as `root`. */
-  var freeGlobal = freeExports && freeModule && typeof global === 'object' && global
+  const freeGlobal = freeExports && freeModule && typeof global === 'object' && global
   if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal || freeGlobal.self === freeGlobal)) {
     root = freeGlobal
   }
@@ -36,22 +36,22 @@
    * See the [ES6 spec](http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength)
    * for more details.
    */
-  var maxSafeInteger = Math.pow(2, 53) - 1
+  const maxSafeInteger = Math.pow(2, 53) - 1
 
   /** Regular expression to detect Opera. */
-  var reOpera = /\bOpera/
+  const reOpera = /\bOpera/
 
   /** Possible global object. */
-  var thisBinding = this
+  const thisBinding = this
 
   /** Used for native method references. */
-  var objectProto = Object.prototype
+  const objectProto = Object.prototype
 
   /** Used to check for own properties of an object. */
-  var hasOwnProperty = objectProto.hasOwnProperty
+  const hasOwnProperty = objectProto.hasOwnProperty
 
   /** Used to resolve the internal `[[Class]]` of values. */
-  var toString = objectProto.toString
+  const toString = objectProto.toString
 
   /* -------------------------------------------------------------------------- */
 
@@ -79,7 +79,7 @@
     // Platform tokens are defined at:
     // http://msdn.microsoft.com/en-us/library/ms537503(VS.85).aspx
     // http://web.archive.org/web/20081122053950/http://msdn.microsoft.com/en-us/library/ms537503(VS.85).aspx
-    var data = {
+    let data = {
       '10.0': '10',
       6.4: '10 Technical Preview',
       6.3: '8.1',
@@ -132,8 +132,8 @@
    * @param {Function} callback The function called per iteration.
    */
   function each (object, callback) {
-    var index = -1
-    var length = object ? object.length : 0
+    let index = -1
+    const length = object ? object.length : 0
 
     if (typeof length === 'number' && length > -1 && length <= maxSafeInteger) {
       while (++index < length) {
@@ -166,7 +166,7 @@
    * @param {Function} callback The function executed per own property.
    */
   function forOwn (object, callback) {
-    for (var key in object) {
+    for (const key in object) {
       if (hasOwnProperty.call(object, key)) {
         callback(object[key], key, object)
       }
@@ -197,7 +197,7 @@
    * @returns {boolean} Returns `true` if the property value is a non-primitive, else `false`.
    */
   function isHostType (object, property) {
-    var type = object != null ? typeof object[property] : 'number'
+    const type = object != null ? typeof object[property] : 'number'
     return !/^(?:boolean|number|string|undefined)$/.test(type) &&
       (type == 'object' ? !!object[property] : true)
   }
@@ -222,7 +222,7 @@
    * @returns {*} The accumulated result.
    */
   function reduce (array, callback) {
-    var accumulator = null
+    let accumulator = null
     each(array, function (value, index) {
       accumulator = callback(accumulator, value, index, array)
     })
@@ -252,10 +252,10 @@
    */
   function parse (ua) {
     /** The environment context object. */
-    var context = root
+    let context = root
 
     /** Used to flag when a custom context is provided. */
-    var isCustomContext = ua && typeof ua === 'object' && getClassOf(ua) != 'String'
+    const isCustomContext = ua && typeof ua === 'object' && getClassOf(ua) != 'String'
 
     // Juggle arguments.
     if (isCustomContext) {
@@ -264,49 +264,49 @@
     }
 
     /** Browser navigator object. */
-    var nav = context.navigator || {}
+    const nav = context.navigator || {}
 
     /** Browser user agent string. */
-    var userAgent = nav.userAgent || ''
+    const userAgent = nav.userAgent || ''
 
     ua || (ua = userAgent)
 
     /** Used to flag when `thisBinding` is the [ModuleScope]. */
-    var isModuleScope = isCustomContext || thisBinding == oldRoot
+    const isModuleScope = isCustomContext || thisBinding == oldRoot
 
     /** Used to detect if browser is like Chrome. */
-    var likeChrome = isCustomContext
+    const likeChrome = isCustomContext
       ? !!nav.likeChrome
       : /\bChrome\b/.test(ua) && !/internal|\n/i.test(toString.toString())
 
     /** Internal `[[Class]]` value shortcuts. */
-    var objectClass = 'Object'
-    var airRuntimeClass = isCustomContext ? objectClass : 'ScriptBridgingProxyObject'
-    var enviroClass = isCustomContext ? objectClass : 'Environment'
-    var javaClass = (isCustomContext && context.java) ? 'JavaPackage' : getClassOf(context.java)
-    var phantomClass = isCustomContext ? objectClass : 'RuntimeObject'
+    const objectClass = 'Object'
+    const airRuntimeClass = isCustomContext ? objectClass : 'ScriptBridgingProxyObject'
+    const enviroClass = isCustomContext ? objectClass : 'Environment'
+    const javaClass = (isCustomContext && context.java) ? 'JavaPackage' : getClassOf(context.java)
+    const phantomClass = isCustomContext ? objectClass : 'RuntimeObject'
 
     /** Detect Java environments. */
-    var java = /\bJava/.test(javaClass) && context.java
+    const java = /\bJava/.test(javaClass) && context.java
 
     /** Detect Rhino. */
-    var rhino = java && getClassOf(context.environment) == enviroClass
+    const rhino = java && getClassOf(context.environment) == enviroClass
 
     /** A character to represent alpha. */
-    var alpha = java ? 'a' : '\u03b1'
+    const alpha = java ? 'a' : '\u03b1'
 
     /** A character to represent beta. */
-    var beta = java ? 'b' : '\u03b2'
+    const beta = java ? 'b' : '\u03b2'
 
     /** Browser document object. */
-    var doc = context.document || {}
+    const doc = context.document || {}
 
     /**
      * Detect Opera browser (Presto-based).
      * http://www.howtocreate.co.uk/operaStuff/operaObject.html
      * http://dev.opera.com/articles/view/opera-mini-web-content-authoring-guidelines/#operamini
      */
-    var opera = context.operamini || context.opera
+    let opera = context.operamini || context.opera
 
     /** Opera `[[Class]]`. */
     var operaClass = reOpera.test(operaClass = (isCustomContext && opera) ? opera['[[Class]]'] : getClassOf(opera))
@@ -316,28 +316,28 @@
     /* ------------------------------------------------------------------------ */
 
     /** Temporary variable used over the script's lifetime. */
-    var data
+    let data
 
     /** The CPU architecture. */
-    var arch = ua
+    let arch = ua
 
     /** Platform description array. */
-    var description = []
+    let description = []
 
     /** Platform alpha/beta indicator. */
-    var prerelease = null
+    let prerelease = null
 
     /** A flag to indicate that environment features should be used to resolve the platform. */
-    var useFeatures = ua == userAgent
+    const useFeatures = ua == userAgent
 
     /** The browser/environment version. */
-    var version = useFeatures && opera && typeof opera.version === 'function' && opera.version()
+    let version = useFeatures && opera && typeof opera.version === 'function' && opera.version()
 
     /** A flag to indicate if the OS ends with "/ Version" */
-    var isSpecialCasedOS
+    let isSpecialCasedOS
 
     /* Detectable layout engines (order is important). */
-    var layout = getLayout([
+    let layout = getLayout([
       { label: 'EdgeHTML', pattern: 'Edge' },
       'Trident',
       { label: 'WebKit', pattern: 'AppleWebKit' },
@@ -350,7 +350,7 @@
     ])
 
     /* Detectable browser names (order is important). */
-    var name = getName([
+    let name = getName([
       'Adobe AIR',
       'Arora',
       'Avant Browser',
@@ -400,7 +400,7 @@
     ])
 
     /* Detectable products (order is important). */
-    var product = getProduct([
+    let product = getProduct([
       { label: 'BlackBerry', pattern: 'BB10' },
       'BlackBerry',
       { label: 'Galaxy S', pattern: 'GT-I9000' },
@@ -434,7 +434,7 @@
     ])
 
     /* Detectable manufacturers. */
-    var manufacturer = getManufacturer({
+    let manufacturer = getManufacturer({
       Apple: { iPad: 1, iPhone: 1, iPod: 1 },
       Archos: {},
       Amazon: { Kindle: 1, 'Kindle Fire': 1 },
@@ -454,7 +454,7 @@
     })
 
     /* Detectable operating systems (order is important). */
-    var os = getOS([
+    let os = getOS([
       'Windows Phone',
       'Android',
       'CentOS',
@@ -545,7 +545,7 @@
      */
     function getOS (guesses) {
       return reduce(guesses, function (result, guess) {
-        var pattern = guess.pattern || qualify(guess)
+        const pattern = guess.pattern || qualify(guess)
         if (!result && (result =
               RegExp('\\b' + pattern + '(?:/[\\d.]+|[ \\w.]*)', 'i').exec(ua)
         )) {
@@ -564,7 +564,7 @@
      */
     function getProduct (guesses) {
       return reduce(guesses, function (result, guess) {
-        var pattern = guess.pattern || qualify(guess)
+        const pattern = guess.pattern || qualify(guess)
         if (!result && (result =
               RegExp('\\b' + pattern + ' *\\d+[.\\w_]*', 'i').exec(ua) ||
               RegExp('\\b' + pattern + ' *\\w+-[\\w]*', 'i').exec(ua) ||
@@ -997,7 +997,7 @@
         family: (data && !isSpecialCasedOS) ? os.replace(data[0], '') : os,
         version: data ? data[1] : null,
         toString: function () {
-          var version = this.version
+          const version = this.version
           return this.family + ((version && !isSpecialCasedOS) ? ' ' + version : '') + (this.architecture == 64 ? ' 64-bit' : '')
         }
       }
@@ -1033,7 +1033,7 @@
      * @name platform
      * @type Object
      */
-    var platform = {}
+    const platform = {}
 
     /**
      * The platform description.
@@ -1187,7 +1187,7 @@
   /* -------------------------------------------------------------------------- */
 
   // Export platform.
-  var platform = parse()
+  const platform = parse()
 
   // Some AMD build optimizers, like r.js, check for condition patterns like the following:
   if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {

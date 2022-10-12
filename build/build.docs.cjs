@@ -25,6 +25,7 @@ async function typedoc () {
   // prepare tsconfig
   const tsConfig = json5.parse(fs.readFileSync(tsConfigPath, 'utf8'))
   tsConfig.include = ['src/ts/**/*', 'build/typings/**/*.d.ts']
+  tsConfig.exclude = ['src/**/*.spec.ts']
   fs.writeFileSync(tempTsConfigPath, JSON.stringify(tsConfig, undefined, 2))
 
   // If you want TypeDoc to load tsconfig.json / typedoc.json files
@@ -92,11 +93,11 @@ let iifeBundle, esmBundle, umdBundle, workflowBadget, coverallsBadge
 if (repoProvider) {
   switch (repoProvider) {
     case 'github':
-      iifeBundle = `[IIFE bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/master/${iifeBundlePath})`
-      esmBundle = `[ESM bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/master/${esmBundlePath})`
-      umdBundle = `[UMD bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/master/${umdBundlePath})`
-      workflowBadget = `[![Node.js CI](https://github.com/${repoUsername}/${repoName}/workflows/build/badge.svg)](https://github.com/${repoUsername}/${repoName}/actions?query=workflow%3A%22build%22)`
-      coverallsBadge = `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=master)](https://coveralls.io/github/${repoUsername}/${repoName}?branch=master)`
+      iifeBundle = `[IIFE bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/main/${iifeBundlePath})`
+      esmBundle = `[ESM bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/main/${esmBundlePath})`
+      umdBundle = `[UMD bundle](https://raw.githubusercontent.com/${repoUsername}/${repoName}/main/${umdBundlePath})`
+      workflowBadget = `[![Node.js CI](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/${repoUsername}/${repoName}/actions/workflows/build-and-test.yml)`
+      // coverallsBadge = `[![Coverage Status](https://coveralls.io/repos/github/${repoUsername}/${repoName}/badge.svg?branch=main)](https://coveralls.io/github/${repoUsername}/${repoName}?branch=main)`
       break
 
     case 'gitlab':

@@ -1,8 +1,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![Node.js CI](https://github.com/juanelas/pbkdf2-hmac/workflows/build/badge.svg)](https://github.com/juanelas/pbkdf2-hmac/actions?query=workflow%3A%22build%22)
-[![Coverage Status](https://coveralls.io/repos/github/juanelas/pbkdf2-hmac/badge.svg?branch=master)](https://coveralls.io/github/juanelas/pbkdf2-hmac?branch=master)
+[![Node.js CI](https://github.com/juanelas/pbkdf2-hmac/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/juanelas/pbkdf2-hmac/actions/workflows/build-and-test.yml)
+undefined
 
 # pbkdf2-hmac
 
@@ -32,7 +32,7 @@ import pbkdf2Hmac from 'pbkdf2-hmac'
 
 The appropriate version for browser or node is automatically exported.
 
-You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/master/dist/bundles/iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/master/dist/bundles/esm.min.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/master/dist/bundles/umd.js) and manually add it to your project, or, if you have already installed `pbkdf2-hmac` in your project, just get the bundles from `node_modules/pbkdf2-hmac/dist/bundles/`.
+You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/main/dist/bundles/iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/main/dist/bundles/esm.min.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/main/dist/bundles/umd.js) and manually add it to your project, or, if you have already installed `pbkdf2-hmac` in your project, just get the bundles from `node_modules/pbkdf2-hmac/dist/bundles/`.
 
 An example of usage could be:
 

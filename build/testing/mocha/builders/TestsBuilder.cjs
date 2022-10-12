@@ -26,6 +26,27 @@ function fileChecksum (filePath) {
     .digest('hex')
 }
 
+function renameJsToCjs (dir, fileList = []) {
+  const files = fs.readdirSync(dir)
+
+  files.forEach(file => {
+    const srcFile = path.join(dir, file)
+    if (fs.statSync(srcFile).isDirectory()) {
+      fileList = renameJsToCjs(srcFile, fileList)
+    } else {
+      const match = file.match(/(.*)\.js$/)
+      if (match !== null) {
+        const filename = match[1]
+        const dstFile = path.join(dir, `${filename}.cjs`)
+        fs.renameSync(srcFile, dstFile)
+        const fileContents = fs.readFileSync(dstFile, 'utf8')
+        const updatedFileContents = fileContents.replace(/(require\([`'"])(\..*)([`'"])/g, '$1$2.cjs$3')
+        fs.writeFileSync(dstFile, updatedFileContents, { encoding: 'utf8' })
+      }
+    }
+  })
+}
+
 class TestsBuilder extends Builder {
   constructor ({ name, configPath, tempDir }) {
     super(path.join(tempDir, 'semaphore'), name)
@@ -57,6 +78,9 @@ class TestsBuilder extends Builder {
     }
     tsConfig.exclude = ['src/ts/**/!(.spec).ts']
 
+    if (this.commonjs) {
+      tsConfig.compilerOptions.module = 'commonjs'
+    }
     // "noResolve": true
     // tsConfig.compilerOptions.noResolve = true
 
@@ -67,11 +91,9 @@ class TestsBuilder extends Builder {
     tsConfig.compilerOptions.noEmit = false
 
     // source mapping eases debuging
-    tsConfig.compilerOptions.sourceMap = true
+    tsConfig.compilerOptions.inlineSourceMap = true
 
-    if (this.commonjs) {
-      tsConfig.compilerOptions.module = 'commonjs'
-    }
+    tsConfig.compilerOptions.rootDir = '.'
 
     // Removed typeroots (it causes issues)
     tsConfig.compilerOptions.typeRoots = undefined
@@ -105,6 +127,9 @@ class TestsBuilder extends Builder {
             this.testFilesChecksums[testFiles[i]] = checksum
           }
         }
+        if (this.commonjs) {
+          renameJsToCjs(mochaTsDir)
+        }
         this.emit('ready', updateSemaphore)
       } else {
         this.emit('busy')
@@ -130,6 +155,7 @@ class TestsBuilder extends Builder {
     // `createWatchProgram` creates an initial program, watches files, and updates
     // the program over time.
     this.watcher = ts.createWatchProgram(this.host)
+    this.watcher.getProgram()
     return await this.ready()
   }
 

@@ -18,7 +18,6 @@ coverage
 # Test temporal files
 .mocha-ts
 .tsconfig.json
-.dst
 
 # docs temporal files
 .nojekyll

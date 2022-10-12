@@ -1,10 +1,10 @@
 #! /usr/bin/env node
 const fs = require('fs')
 const path = require('path')
-const childProcess = require('child_process')
 const glob = require('glob')
 const minimatch = require('minimatch')
 const rimraf = require('rimraf')
+const runScript = require('../run-script.cjs')
 
 const rootDir = path.join(__dirname, '../..')
 
@@ -19,32 +19,119 @@ rimraf.sync(mochaTsDir)
 const semaphorePath = `${mochaTsRelativeDir}/semaphore`
 
 const tempDir = mochaTsDir
+fs.mkdirSync(tempDir, { recursive: true })
 
-let commonjs = false
-let watch = false
-const testFiles = []
+const usage = `Usage: mocha-ts [options] [spec]
 
-// First let us prepare the args to pass to mocha.
-// ts.files will be replaced by their js-transpiled counterparts
-// a watch file to our semaphore will be added
-const processedArgs = processArgs(process.argv.slice(2))
+mocha against ts tests and modules
 
-commonjs = watch ? true : commonjs // mocha in watch mode only supports commonjs
+Arguments:
+  spec              One or more files, directories, or globs to test (default:
+                    "{src/ts/**/*.spec.ts,test/**/*.ts}")
+
+Options:
+  -w, --watch       run in watch mode. Since mocha only supports CJS in watch
+                    mode. This option implies -cjs as well (default: false)
+  -cjs, --commonjs  run tests against the CJS bundle instead of the ESM one 
+                    (default: false)
+  -h, --help        display help for command
+
+`
+
+function parse () {
+  const args = process.argv.slice(2)
+
+  const help = getBooleanOption(args, '--help', '-h')
+  if (help) {
+    console.log(usage)
+    process.exit()
+  }
+
+  const requiredFile = getOption(args, '--require')
+
+  const watch = getBooleanOption(args, '--watch', '-w')
+
+  const commonjs = getBooleanOption(args, '--commonjs', '-cjs')
+  if (commonjs === false && watch === true) {
+    console.log('ERROR: mocha in watch mode only supports commonjs')
+    console.log(usage)
+    process.exit(1)
+  }
+
+  let testsGlob = (args.pop() ?? '').replace(/^['"]/, '').replace(/['"]$/, '') // Let us remove surrounding quotes in string (it gives issues in windows)
+  if (testsGlob === '') {
+    testsGlob = '{src/ts/**/*.spec.ts,test/**/*.ts}'
+  }
+
+  const mochaArgs = []
+
+  if (requiredFile !== '') {
+    mochaArgs.push('--require')
+    mochaArgs.push(requiredFile)
+  }
+  mochaArgs.push('--require')
+  mochaArgs.push('build/testing/mocha/mocha-init.cjs')
+
+  if (watch) {
+    mochaArgs.push('-w')
+    mochaArgs.push('--watch-files')
+    mochaArgs.push(semaphorePath)
+  }
+
+  if (testsGlob.substring(0, 1) === '-') {
+    console.log(usage)
+    process.exit(9)
+  }
+  let filenames = []
+  try {
+    filenames = glob.sync(testsGlob, { cwd: rootDir, matchBase: true })
+  } catch (error) {}
+  if (filenames.length === 0) {
+    console.error('invalid or empty glob pattern: ' + testsGlob)
+    console.log()
+    console.log(usage)
+    process.exit(9)
+  }
+
+  const testFiles = []
+  const jsTestFiles = []
+
+  if (filenames.length > 0) {
+    filenames.forEach(file => {
+      const isTsTestFile = minimatch(file, '{test/**/*.ts,src/**/*.spec.ts}', { matchBase: true })
+      if (isTsTestFile) {
+        testFiles.push(file)
+        const extension = commonjs ? 'cjs' : 'js'
+        jsTestFiles.push(`${mochaTsRelativeDir}/${file.slice(0, -3)}.${extension}`)
+      }
+    })
+  }
+  mochaArgs.push(...jsTestFiles)
+
+  return {
+    mochaArgs,
+    testFiles,
+    commonjs
+  }
+}
+
+const processedArgs = parse()
+const commonjs = processedArgs.commonjs
+const testFiles = processedArgs.testFiles
+const mochaArgs = processedArgs.mochaArgs
+
+// prepare setup for mocha (it should be written to a JSON file that will be loaded by the mocha-init.cjs)
+const mochaSetup = {
+  testFiles,
+  commonjs
+}
+fs.writeFileSync(path.join(tempDir, 'testSetup.json'), JSON.stringify(mochaSetup, undefined, 2), { encoding: 'utf-8' })
 
 if (commonjs) {
-  // we create a new package.json with 'type: "module"' removed
-  const tempPkgJsonPath = path.join(tempDir, 'package.json')
-
-  delete pkgJson.type
-
-  fs.mkdirSync(tempDir, { recursive: true })
-  fs.writeFileSync(tempPkgJsonPath, JSON.stringify(pkgJson, undefined, 2), { encoding: 'utf-8' })
-
-  console.log('\x1b[33mℹ [mocha-ts] Running tests against the CommonJS module \x1b[0m')
+  console.log('\x1b[33mℹ [mocha-ts] Running tests against the CommonJS module \x1b[0m\n')
 } else {
-  console.log('\x1b[33mℹ [mocha-ts] Running tests against the ESM module \x1b[0m')
+  console.log('\x1b[33mℹ [mocha-ts] Running tests against the ESM module \x1b[0m\n')
 }
-console.log()
 
 const rollupBuilder = require('../testing/mocha/builders/RollupBuilder.cjs').rollupBuilder
 
@@ -53,67 +140,27 @@ rollupBuilder.start({ commonjs, watch: false }).then(() => {
   const testsBuilder = require('../testing/mocha/builders/TestsBuilder.cjs').testBuilder
   testsBuilder.start({ commonjs, testFiles }).then(() => {
     testsBuilder.close()
-    // Let us write a file with the test files for the child process to get them
-    fs.writeFileSync(path.join(tempDir, 'testSetup.json'), JSON.stringify({ testFiles, commonjs }), { encoding: 'utf-8' })
-    // Now we can run a script and invoke a callback when complete, e.g.
-    runScript(path.join(rootDir, 'node_modules/mocha/bin/mocha'), processedArgs)
+    // Now run mocha
+    runScript(path.join(rootDir, 'node_modules/mocha/bin/mocha'), mochaArgs)
   })
 })
 
-function processArgs (args) {
-  args = process.argv.slice(2).map(arg => {
-    // Let us first remove surrounding quotes in string (it gives issues in windows)
-    arg = arg.replace(/^['"]/, '').replace(/['"]$/, '')
-    const filenames = glob.sync(arg, { cwd: rootDir, matchBase: true })
-    if (filenames.length > 0) {
-      return filenames.map(file => {
-        const isTsTestFile = minimatch(file, '{test/**/*.ts,src/**/*.spec.ts}', { matchBase: true })
-        if (isTsTestFile) {
-          testFiles.push(file)
-          return `${mochaTsRelativeDir}/${file.slice(0, -3)}.js`
-        }
-        return file
-      })
+function getBooleanOption (args, ...optionNames) {
+  let found = false
+  optionNames.forEach((option) => {
+    const index = args.indexOf(option)
+    if (index > -1) {
+      found = true
+      args.splice(index, 1)
     }
-    return arg
   })
-
-  const processedArgs = []
-
-  for (const arg of args) {
-    if (Array.isArray(arg)) {
-      processedArgs.push(...arg)
-    } else {
-      if (arg === '--commonjs' || arg === '--cjs') {
-        commonjs = true
-      }
-      if (arg !== '--watch-files') {
-        processedArgs.push(arg)
-      }
-      if (arg === '--watch' || arg === '-w') {
-        watch = true
-        processedArgs.push('--watch-files')
-        processedArgs.push(semaphorePath)
-      }
-    }
-  }
-
-  return processedArgs
+  return found
 }
 
-function runScript (scriptPath, args) {
-  const mochaCmd = childProcess.fork(scriptPath, args, {
-    cwd: rootDir
-  })
-
-  mochaCmd.on('error', (error) => {
-    throw error
-  })
-
-  // execute the callback once the process has finished running
-  mochaCmd.on('exit', function (code) {
-    if (code !== 0) {
-      throw new Error('exit code ' + code)
-    }
-  })
+function getOption (args, option) {
+  const index = args.indexOf(option)
+  if (index > -1 && index < args.length - 2) {
+    return args.splice(index, 2)[1]
+  }
+  return ''
 }

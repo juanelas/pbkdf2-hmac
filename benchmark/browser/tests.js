@@ -350,7 +350,7 @@ function hexToBuf (hexStr, returnArrayBuffer = false) {
   /* eslint-enable no-lone-blocks */
 }
 
-var index_browser_mod = /* #__PURE__ */Object.freeze({
+const index_browser_mod = /* #__PURE__ */Object.freeze({
   __proto__: null,
   bigintToBuf: bigintToBuf,
   bigintToHex: bigintToHex,
@@ -364,7 +364,7 @@ var index_browser_mod = /* #__PURE__ */Object.freeze({
   textToBuf: textToBuf
 })
 
-var pbkdf2 = [
+const pbkdf2 = [
   {
     comment: 'Bad hash algorithm',
     input: {

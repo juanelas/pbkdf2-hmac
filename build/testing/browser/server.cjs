@@ -13,6 +13,7 @@ const multi = require('@rollup/plugin-multi-entry')
 const typescriptPlugin = require('@rollup/plugin-typescript')
 const commonjs = require('@rollup/plugin-commonjs')
 const json = require('@rollup/plugin-json')
+const runScript = require('../../run-script.cjs')
 
 const rootDir = path.join(__dirname, '..', '..', '..')
 
@@ -83,7 +84,8 @@ async function buildTests (testFiles) {
   let bundledCode = output[0].code
   const replacements = _getEnvVarsReplacements(bundledCode)
   for (const replacement in replacements) {
-    bundledCode = bundledCode.replaceAll(replacement, replacements[replacement])
+    const regExp = new RegExp(replacement, 'g')
+    bundledCode = bundledCode.replace(regExp, replacements[replacement])
   }
   return bundledCode
 }
@@ -94,10 +96,15 @@ class TestServer {
   }
 
   async init (testFiles) {
+    /** Let us first check if the necessary files are built, and if not, build */
+    if (!fs.existsSync(pkgJson.exports['./esm-browser-bundle'])) {
+      await runScript(path.join(rootDir, 'node_modules', '.bin', 'rollup'), ['-c', 'build/rollup.config.js'])
+    }
+
     const tests = await buildTests(testFiles)
     this.server.on('request', function (req, res) {
       if (req.url === `/${name}.esm.js`) {
-        fs.readFile(path.join(rootDir, pkgJson.directories.dist, 'bundles/esm.js'), function (err, data) {
+        fs.readFile(path.join(rootDir, pkgJson.exports['./esm-browser-bundle']), function (err, data) {
           if (err) {
             res.writeHead(404)
             res.end(JSON.stringify(err))

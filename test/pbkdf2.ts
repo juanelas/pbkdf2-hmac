@@ -1,14 +1,14 @@
 import * as bigintConversion from 'bigint-conversion'
 import scrypt, { HashAlg } from '#pkg'
-
 import { vectors } from '../test-vectors/pbkdf2'
 
 describe('testing pbkdf2', function () {
   this.timeout(360000)
+
   for (const vector of vectors) {
-    describe(`${vector.comment || ''} : ${JSON.stringify(vector.input)}`, function () { // eslint-disable-line
+    describe(`${vector.comment ?? ''} : ${JSON.stringify(vector.input)}`, function () {
       if ('error' in vector) {
-        it(`should be rejected because of ${(vector.error !== undefined) ? vector.error.toString() : 'unknown reason'}`, async function () {
+        it(`should be rejected because of ${vector.error !== undefined ? vector.error.toString() : 'unknown reason'}`, async function () {
           try {
             // @ts-expect-error
             await scrypt(vector.input.P, vector.input.S, vector.input.c, vector.input.dkLen, vector.input.hash)

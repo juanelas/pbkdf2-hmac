@@ -36,9 +36,11 @@ tsconfig.json
 # SRC docs
 src/docs
 
+# Environment files
+*.env
+
 # Test temporal files
 .mocha-ts
-.dst
 .tsconfig.json
 
 # docs temporal files
@@ -50,5 +52,5 @@ CODE_OF_CONDUCT.md
 # TODO
 TO-DO.txt
 
-# benchmarks
+# benchmark
 benchmark

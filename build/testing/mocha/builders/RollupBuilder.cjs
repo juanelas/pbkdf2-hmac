@@ -31,7 +31,7 @@ class RollupBuilder extends Builder {
 
     const { options } = await loadAndParseConfigFile(this.configPath)
 
-    // Watch only the Node ESM module, that is the one we are going to use with mocha
+    // Instead of compiling all the outputs let us just take the one we are using with mocha (either cjs or esm)
     const rollupOptions = options.filter(bundle => {
       const file = (bundle.output[0].dir !== undefined)
         ? path.join(bundle.output[0].dir, bundle.output[0].entryFileNames)
@@ -62,9 +62,10 @@ class RollupBuilder extends Builder {
 
         case 'END':
           if (event.result) event.result.close()
-          fs.mkdirSync(path.join(this.tempDir, path.dirname(this.watchedModule)), { recursive: true })
-          // console.log(path.join(this.tempDir, path.dirname(this.watchedModule)))
-          fs.copyFileSync(this.watchedModule, path.join(this.tempDir, this.watchedModule))
+
+          // fs.mkdirSync(path.join(this.tempDir, path.dirname(this.watchedModule)), { recursive: true })
+          // // console.log(path.join(this.tempDir, path.dirname(this.watchedModule)))
+          // fs.copyFileSync(this.watchedModule, path.join(this.tempDir, this.watchedModule))
 
           if (this.firstBuild) {
             this.firstBuild = false
@@ -77,7 +78,7 @@ class RollupBuilder extends Builder {
           if (event.result) event.result.close()
           this.emit('error', event.error)
           fs.writeFileSync(path.join(rootDir, this.watchedModule), '', 'utf8')
-          fs.writeFileSync(path.join(this.tempDir, this.watchedModule), '', 'utf8')
+          // fs.writeFileSync(path.join(this.tempDir, this.watchedModule), '', 'utf8')
           this.emit('ready')
           break
 

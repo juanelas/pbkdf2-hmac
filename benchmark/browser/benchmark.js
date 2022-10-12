@@ -9,56 +9,56 @@
   'use strict'
 
   /** Used as a safe reference for `undefined` in pre ES5 environments. */
-  var undefined
+  let undefined
 
   /** Used to determine if values are of the language type Object. */
-  var objectTypes = {
+  const objectTypes = {
     function: true,
     object: true
   }
 
   /** Used as a reference to the global object. */
-  var root = (objectTypes[typeof window] && window) || this
+  let root = (objectTypes[typeof window] && window) || this
 
   /** Detect free variable `define`. */
-  var freeDefine = typeof define === 'function' && typeof define.amd === 'object' && define.amd && define
+  const freeDefine = typeof define === 'function' && typeof define.amd === 'object' && define.amd && define
 
   /** Detect free variable `exports`. */
-  var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports
+  const freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports
 
   /** Detect free variable `module`. */
-  var freeModule = objectTypes[typeof module] && module && !module.nodeType && module
+  const freeModule = objectTypes[typeof module] && module && !module.nodeType && module
 
   /** Detect free variable `global` from Node.js or Browserified code and use it as `root`. */
-  var freeGlobal = freeExports && freeModule && typeof global === 'object' && global
+  const freeGlobal = freeExports && freeModule && typeof global === 'object' && global
   if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal || freeGlobal.self === freeGlobal)) {
     root = freeGlobal
   }
 
   /** Detect free variable `require`. */
-  var freeRequire = typeof require === 'function' && require
+  const freeRequire = typeof require === 'function' && require
 
   /** Used to assign each benchmark an incremented id. */
-  var counter = 0
+  let counter = 0
 
   /** Detect the popular CommonJS extension `module.exports`. */
-  var moduleExports = freeModule && freeModule.exports === freeExports && freeExports
+  const moduleExports = freeModule && freeModule.exports === freeExports && freeExports
 
   /** Used to detect primitive types. */
-  var rePrimitive = /^(?:boolean|number|string|undefined)$/
+  const rePrimitive = /^(?:boolean|number|string|undefined)$/
 
   /** Used to make every compiled test unique. */
-  var uidCounter = 0
+  let uidCounter = 0
 
   /** Used to assign default `context` object properties. */
-  var contextProps = [
+  const contextProps = [
     'Array', 'Date', 'Function', 'Math', 'Object', 'RegExp', 'String', '_',
     'clearTimeout', 'chrome', 'chromium', 'document', 'navigator', 'phantom',
     'platform', 'process', 'runtime', 'setTimeout'
   ]
 
   /** Used to avoid hz of Infinity. */
-  var divisors = {
+  const divisors = {
     1: 4096,
     2: 512,
     3: 64,
@@ -70,7 +70,7 @@
    * T-Distribution two-tailed critical values for 95% confidence.
    * For more info see http://www.itl.nist.gov/div898/handbook/eda/section3/eda3672.htm.
    */
-  var tTable = {
+  const tTable = {
     1: 12.706,
     2: 4.303,
     3: 3.182,
@@ -108,7 +108,7 @@
    * Critical Mann-Whitney U-values for 95% confidence.
    * For more info see http://www.saburchill.com/IBbiology/stats/003.html.
    */
-  var uTable = {
+  const uTable = {
     5: [0, 1, 2],
     6: [1, 2, 3, 5],
     7: [1, 3, 5, 6, 8],
@@ -149,7 +149,7 @@
    */
   function runInContext (context) {
     // Exit early if unable to acquire lodash.
-    var _ = context && context._ || require('lodash') || root._
+    const _ = context && context._ || require('lodash') || root._
     if (!_) {
       Benchmark.runInContext = runInContext
       return Benchmark
@@ -161,54 +161,54 @@
     context = context ? _.defaults(root.Object(), context, _.pick(root, contextProps)) : root
 
     /** Native constructor references. */
-    var Array = context.Array
-    var Date = context.Date
-    var Function = context.Function
-    var Math = context.Math
-    var Object = context.Object
-    var RegExp = context.RegExp
-    var String = context.String
+    const Array = context.Array
+    const Date = context.Date
+    const Function = context.Function
+    const Math = context.Math
+    const Object = context.Object
+    const RegExp = context.RegExp
+    const String = context.String
 
     /** Used for `Array` and `Object` method references. */
-    var arrayRef = []
-    var objectProto = Object.prototype
+    const arrayRef = []
+    const objectProto = Object.prototype
 
     /** Native method shortcuts. */
-    var abs = Math.abs
-    var clearTimeout = context.clearTimeout
-    var floor = Math.floor
-    var log = Math.log
-    var max = Math.max
-    var min = Math.min
-    var pow = Math.pow
-    var push = arrayRef.push
-    var setTimeout = context.setTimeout
-    var shift = arrayRef.shift
-    var slice = arrayRef.slice
-    var sqrt = Math.sqrt
-    var toString = objectProto.toString
-    var unshift = arrayRef.unshift
+    const abs = Math.abs
+    const clearTimeout = context.clearTimeout
+    const floor = Math.floor
+    const log = Math.log
+    const max = Math.max
+    const min = Math.min
+    const pow = Math.pow
+    const push = arrayRef.push
+    const setTimeout = context.setTimeout
+    const shift = arrayRef.shift
+    const slice = arrayRef.slice
+    const sqrt = Math.sqrt
+    const toString = objectProto.toString
+    const unshift = arrayRef.unshift
 
     /** Used to avoid inclusion in Browserified bundles. */
-    var req = require
+    const req = require
 
     /** Detect DOM document object. */
-    var doc = isHostType(context, 'document') && context.document
+    const doc = isHostType(context, 'document') && context.document
 
     /** Used to access Wade Simmons' Node.js `microtime` module. */
-    var microtimeObject = req('microtime')
+    const microtimeObject = req('microtime')
 
     /** Used to access Node.js's high resolution timer. */
-    var processObject = isHostType(context, 'process') && context.process
+    const processObject = isHostType(context, 'process') && context.process
 
     /** Used to prevent a `removeChild` memory leak in IE < 9. */
-    var trash = doc && doc.createElement('div')
+    const trash = doc && doc.createElement('div')
 
     /** Used to integrity check compiled tests. */
-    var uid = 'uid' + _.now()
+    const uid = 'uid' + _.now()
 
     /** Used to avoid infinite recursion when methods call each other. */
-    var calledBy = {}
+    const calledBy = {}
 
     /**
      * An object used to flag environments/features.
@@ -217,7 +217,7 @@
      * @memberOf Benchmark
      * @type Object
      */
-    var support = {};
+    const support = {};
 
     (function () {
       /**
@@ -264,7 +264,7 @@
      * @private
      * @type Object
      */
-    var timer = {
+    let timer = {
 
       /**
        * The timer namespace object or constructor.
@@ -378,7 +378,7 @@
      * });
      */
     function Benchmark (name, fn, options) {
-      var bench = this
+      const bench = this
 
       // Allow instance creation without the `new` operator.
       if (!(bench instanceof Benchmark)) {
@@ -418,7 +418,7 @@
      * @param {Object} clone The cloned benchmark instance.
      */
     function Deferred (clone) {
-      var deferred = this
+      const deferred = this
       if (!(deferred instanceof Deferred)) {
         return new Deferred(clone)
       }
@@ -434,7 +434,7 @@
      * @param {Object|string} type The event type.
      */
     function Event (type) {
-      var event = this
+      const event = this
       if (type instanceof Event) {
         return type
       }
@@ -486,7 +486,7 @@
      * });
      */
     function Suite (name, options) {
-      var suite = this
+      const suite = this
 
       // Allow instance creation without the `new` operator.
       if (!(suite instanceof Suite)) {
@@ -531,9 +531,9 @@
     function createFunction () {
       // Lazy define.
       createFunction = function (args, body) {
-        var result
-        var anchor = freeDefine ? freeDefine.amd : Benchmark
-        var prop = uid + 'createFunction'
+        let result
+        const anchor = freeDefine ? freeDefine.amd : Benchmark
+        const prop = uid + 'createFunction'
 
         runScript((freeDefine ? 'define.amd.' : 'Benchmark.') + prop + '=function(' + args + '){' + body + '}')
         result = anchor[prop]
@@ -601,7 +601,7 @@
      * @returns {string} The function's source code.
      */
     function getSource (fn) {
-      var result = ''
+      let result = ''
       if (isStringable(fn)) {
         result = String(fn)
       } else if (support.decompilation) {
@@ -643,7 +643,7 @@
       if (object == null) {
         return false
       }
-      var type = typeof object[property]
+      const type = typeof object[property]
       return !rePrimitive.test(type) && (type != 'object' || !!object[property])
     }
 
@@ -679,12 +679,12 @@
      * @param {string} code The code to run.
      */
     function runScript (code) {
-      var anchor = freeDefine ? define.amd : Benchmark
-      var script = doc.createElement('script')
-      var sibling = doc.getElementsByTagName('script')[0]
-      var parent = sibling.parentNode
-      var prop = uid + 'runScript'
-      var prefix = '(' + (freeDefine ? 'define.amd.' : 'Benchmark.') + prop + '||function(){})();'
+      const anchor = freeDefine ? define.amd : Benchmark
+      const script = doc.createElement('script')
+      let sibling = doc.getElementsByTagName('script')[0]
+      let parent = sibling.parentNode
+      const prop = uid + 'runScript'
+      const prefix = '(' + (freeDefine ? 'define.amd.' : 'Benchmark.') + prop + '||function(){})();'
 
       // Firefox 2.0.0.2 cannot use script injection as intended because it executes
       // asynchronously, but that's OK because script injection is only used to avoid
@@ -735,9 +735,9 @@
      * @memberOf Benchmark.Deferred
      */
     function resolve () {
-      var deferred = this
-      var clone = deferred.benchmark
-      var bench = clone._original
+      const deferred = this
+      const clone = deferred.benchmark
+      const bench = clone._original
 
       if (bench.aborted) {
         // cycle() -> clone cycle/complete event -> compute()'s invoked bench.run() cycle/complete.
@@ -787,7 +787,7 @@
         }
       } else if (callback === 'fastest' || callback === 'slowest') {
         // Get successful, sort by period + margin of error, and filter fastest/slowest.
-        var result = filter(array, 'successful').sort(function (a, b) {
+        const result = filter(array, 'successful').sort(function (a, b) {
           a = a.stats; b = b.stats
           return (a.mean + a.moe > b.mean + b.moe ? 1 : -1) * (callback === 'fastest' ? 1 : -1)
         })
@@ -853,20 +853,20 @@
      * });
      */
     function invoke (benches, name) {
-      var args
-      var bench
-      var queued
-      var index = -1
-      var eventProps = { currentTarget: benches }
-      var options = { onStart: _.noop, onCycle: _.noop, onComplete: _.noop }
-      var result = _.toArray(benches)
+      let args
+      let bench
+      let queued
+      let index = -1
+      const eventProps = { currentTarget: benches }
+      let options = { onStart: _.noop, onCycle: _.noop, onComplete: _.noop }
+      const result = _.toArray(benches)
 
       /**
        * Invokes the method of the current object and if synchronous, fetches the next.
        */
       function execute () {
-        var listeners
-        var async = isAsync(bench)
+        let listeners
+        const async = isAsync(bench)
 
         if (async) {
           // Use `getNext` as the first listener.
@@ -884,9 +884,9 @@
        * Fetches the next bench or executes `onComplete` callback.
        */
       function getNext (event) {
-        var cycleEvent
-        var last = bench
-        var async = isAsync(last)
+        let cycleEvent
+        const last = bench
+        const async = isAsync(last)
 
         if (async) {
           last.off('complete', getNext)
@@ -930,7 +930,7 @@
        */
       function isAsync (object) {
         // Avoid using `instanceof` here because of IE memory leak issues with host objects.
-        var async = args[0] && args[0].async
+        const async = args[0] && args[0].async
         return name == 'run' && (object instanceof Benchmark) &&
           ((async == null ? object.options.async : async) && support.timeout || object.defer)
       }
@@ -1001,9 +1001,9 @@
      * @returns {string} The joined result.
      */
     function join (object, separator1, separator2) {
-      var result = []
-      var length = (object = Object(object)).length
-      var arrayLike = length === length >>> 0
+      const result = []
+      const length = (object = Object(object)).length
+      const arrayLike = length === length >>> 0
 
       separator2 || (separator2 = ': ')
       _.each(object, function (value, key) {
@@ -1022,9 +1022,9 @@
      * @returns {Object} The suite instance.
      */
     function abortSuite () {
-      var event
-      var suite = this
-      var resetting = calledBy.resetSuite
+      let event
+      const suite = this
+      const resetting = calledBy.resetSuite
 
       if (suite.running) {
         event = Event('abort')
@@ -1082,9 +1082,9 @@
      * });
      */
     function add (name, fn, options) {
-      var suite = this
-      var bench = new Benchmark(name, fn, options)
-      var event = Event({ type: 'add', target: bench })
+      const suite = this
+      const bench = new Benchmark(name, fn, options)
+      const event = Event({ type: 'add', target: bench })
 
       if (suite.emit(event), !event.cancelled) {
         suite.push(bench)
@@ -1101,8 +1101,8 @@
      * @returns {Object} The new suite instance.
      */
     function cloneSuite (options) {
-      var suite = this
-      var result = new suite.constructor(_.assign({}, suite.options, options))
+      const suite = this
+      const result = new suite.constructor(_.assign({}, suite.options, options))
 
       // Copy own properties.
       _.forOwn(suite, function (value, key) {
@@ -1124,8 +1124,8 @@
      * @returns {Object} A new suite of benchmarks that passed callback filter.
      */
     function filterSuite (callback) {
-      var suite = this
-      var result = new suite.constructor(suite.options)
+      const suite = this
+      const result = new suite.constructor(suite.options)
 
       result.push.apply(result, filter(suite, callback))
       return result
@@ -1139,9 +1139,9 @@
      * @returns {Object} The suite instance.
      */
     function resetSuite () {
-      var event
-      var suite = this
-      var aborting = calledBy.abortSuite
+      let event
+      const suite = this
+      const aborting = calledBy.abortSuite
 
       if (suite.running && !aborting) {
         // No worries, `resetSuite()` is called within `abortSuite()`.
@@ -1176,7 +1176,7 @@
      * suite.run({ 'async': true, 'queued': true });
      */
     function runSuite (options) {
-      var suite = this
+      const suite = this
 
       suite.reset()
       suite.running = true
@@ -1190,7 +1190,7 @@
           suite.emit(event)
         },
         onCycle: function (event) {
-          var bench = event.target
+          const bench = event.target
           if (bench.error) {
             suite.emit({ type: 'error', target: bench })
           }
@@ -1216,11 +1216,11 @@
      * @returns {*} Returns the return value of the last listener executed.
      */
     function emit (type) {
-      var listeners
-      var object = this
-      var event = Event(type)
-      var events = object.events
-      var args = (arguments[0] = event, arguments)
+      let listeners
+      const object = this
+      const event = Event(type)
+      const events = object.events
+      const args = (arguments[0] = event, arguments)
 
       event.currentTarget || (event.currentTarget = object)
       event.target || (event.target = object)
@@ -1246,8 +1246,8 @@
      * @returns {Array} The listeners array.
      */
     function listeners (type) {
-      var object = this
-      var events = object.events || (object.events = {})
+      const object = this
+      const events = object.events || (object.events = {})
 
       return _.has(events, type) ? events[type] : (events[type] = [])
     }
@@ -1279,14 +1279,14 @@
      * bench.off();
      */
     function off (type, listener) {
-      var object = this
-      var events = object.events
+      const object = this
+      const events = object.events
 
       if (!events) {
         return object
       }
       _.each(type ? type.split(' ') : events, function (listeners, type) {
-        var index
+        let index
         if (typeof listeners === 'string') {
           type = listeners
           listeners = _.has(events, type) && events[type]
@@ -1321,8 +1321,8 @@
      * bench.on('start cycle', listener);
      */
     function on (type, listener) {
-      var object = this
-      var events = object.events || (object.events = {})
+      const object = this
+      const events = object.events || (object.events = {})
 
       _.each(type.split(' '), function (type) {
         (_.has(events, type)
@@ -1342,9 +1342,9 @@
      * @returns {Object} The benchmark instance.
      */
     function abort () {
-      var event
-      var bench = this
-      var resetting = calledBy.reset
+      let event
+      const bench = this
+      const resetting = calledBy.reset
 
       if (bench.running) {
         event = Event('abort')
@@ -1381,8 +1381,8 @@
      * });
      */
     function clone (options) {
-      var bench = this
-      var result = new bench.constructor(_.assign({}, bench, options))
+      const bench = this
+      const result = new bench.constructor(_.assign({}, bench, options))
 
       // Correct the `options` object.
       result.options = _.assign({}, cloneDeep(bench.options), cloneDeep(options))
@@ -1405,23 +1405,23 @@
      * @returns {number} Returns `-1` if slower, `1` if faster, and `0` if indeterminate.
      */
     function compare (other) {
-      var bench = this
+      const bench = this
 
       // Exit early if comparing the same benchmark.
       if (bench == other) {
         return 0
       }
-      var critical
-      var zStat
-      var sample1 = bench.stats.sample
-      var sample2 = other.stats.sample
-      var size1 = sample1.length
-      var size2 = sample2.length
-      var maxSize = max(size1, size2)
-      var minSize = min(size1, size2)
-      var u1 = getU(sample1, sample2)
-      var u2 = getU(sample2, sample1)
-      var u = min(u1, u2)
+      let critical
+      let zStat
+      const sample1 = bench.stats.sample
+      const sample2 = other.stats.sample
+      const size1 = sample1.length
+      const size2 = sample2.length
+      const maxSize = max(size1, size2)
+      const minSize = min(size1, size2)
+      const u1 = getU(sample1, sample2)
+      const u2 = getU(sample2, sample1)
+      const u = min(u1, u2)
 
       function getScore (xA, sampleB) {
         return _.reduce(sampleB, function (total, xB) {
@@ -1458,7 +1458,7 @@
      * @returns {Object} The benchmark instance.
      */
     function reset () {
-      var bench = this
+      const bench = this
       if (bench.running && !calledBy.abort) {
         // No worries, `reset()` is called within `abort()`.
         calledBy.reset = true
@@ -1466,23 +1466,23 @@
         delete calledBy.reset
         return bench
       }
-      var event
-      var index = 0
-      var changes = []
-      var queue = []
+      let event
+      let index = 0
+      const changes = []
+      const queue = []
 
       // A non-recursive solution to check if properties have changed.
       // For more information see http://www.jslab.dk/articles/non.recursive.preorder.traversal.part4.
-      var data = {
+      let data = {
         destination: bench,
         source: _.assign({}, cloneDeep(bench.constructor.prototype), cloneDeep(bench.options))
       }
 
       do {
         _.forOwn(data.source, function (value, key) {
-          var changed
-          var destination = data.destination
-          var currValue = destination[key]
+          let changed
+          const destination = data.destination
+          let currValue = destination[key]
 
           // Skip pseudo private properties and event listeners.
           if (/^_|^events$|^on[A-Z]/.test(key)) {
@@ -1539,17 +1539,17 @@
      * @returns {string} A string representation of the benchmark instance.
      */
     function toStringBench () {
-      var bench = this
-      var error = bench.error
-      var hz = bench.hz
-      var id = bench.id
-      var stats = bench.stats
-      var size = stats.sample.length
-      var pm = '\xb1'
-      var result = bench.name || (_.isNaN(id) ? id : '<Test #' + id + '>')
+      const bench = this
+      const error = bench.error
+      const hz = bench.hz
+      const id = bench.id
+      const stats = bench.stats
+      const size = stats.sample.length
+      const pm = '\xb1'
+      let result = bench.name || (_.isNaN(id) ? id : '<Test #' + id + '>')
 
       if (error) {
-        var errorStr
+        let errorStr
         if (!_.isObject(error)) {
           errorStr = String(error)
         } else if (!_.isError(Error)) {
@@ -1576,25 +1576,25 @@
      * @returns {number} The time taken.
      */
     function clock () {
-      var options = Benchmark.options
-      var templateData = {}
-      var timers = [{ ns: timer.ns, res: max(0.0015, getRes('ms')), unit: 'ms' }]
+      const options = Benchmark.options
+      const templateData = {}
+      const timers = [{ ns: timer.ns, res: max(0.0015, getRes('ms')), unit: 'ms' }]
 
       // Lazy define for hi-res timers.
       clock = function (clone) {
-        var deferred
+        let deferred
 
         if (clone instanceof Deferred) {
           deferred = clone
           clone = deferred.benchmark
         }
-        var bench = clone._original
-        var stringable = isStringable(bench.fn)
-        var count = bench.count = clone.count
-        var decompilable = stringable || (support.decompilation && (clone.setup !== _.noop || clone.teardown !== _.noop))
-        var id = bench.id
-        var name = bench.name || (typeof id === 'number' ? '<Test #' + id + '>' : id)
-        var result = 0
+        const bench = clone._original
+        const stringable = isStringable(bench.fn)
+        const count = bench.count = clone.count
+        const decompilable = stringable || (support.decompilation && (clone.setup !== _.noop || clone.teardown !== _.noop))
+        const id = bench.id
+        const name = bench.name || (typeof id === 'number' ? '<Test #' + id + '>' : id)
+        let result = 0
 
         // Init `minTime` if needed.
         clone.minTime = bench.minTime || (bench.minTime = bench.options.minTime = options.minTime)
@@ -1602,7 +1602,7 @@
         // Compile in setup/teardown functions and the test loop.
         // Create a new compiled test, instead of using the cached `bench.compiled`,
         // to avoid potential engine optimizations enabled over the life of the test.
-        var funcBody = deferred
+        let funcBody = deferred
           ? 'var d#=this,${fnArg}=d#,m#=d#.benchmark._original,f#=m#.fn,su#=m#.setup,td#=m#.teardown;' +
             // When `deferred.cycles` is `0` then...
             'if(!d#.cycles){' +
@@ -1620,8 +1620,8 @@
           : 'var r#,s#,m#=this,f#=m#.fn,i#=m#.count,n#=t#.ns;${setup}\n${begin};' +
             'while(i#--){${fn}\n}${end};${teardown}\nreturn{elapsed:r#,uid:"${uid}"}'
 
-        var compiled = bench.compiled = clone.compiled = createCompiled(bench, decompilable, deferred, funcBody)
-        var isEmpty = !(templateData.fn || stringable)
+        let compiled = bench.compiled = clone.compiled = createCompiled(bench, decompilable, deferred, funcBody)
+        const isEmpty = !(templateData.fn || stringable)
 
         try {
           if (isEmpty) {
@@ -1679,8 +1679,8 @@
        * Creates a compiled function from the given function `body`.
        */
       function createCompiled (bench, decompilable, deferred, body) {
-        var fn = bench.fn
-        var fnArg = deferred ? getFirstArgument(fn) || 'deferred' : ''
+        const fn = bench.fn
+        const fnArg = deferred ? getFirstArgument(fn) || 'deferred' : ''
 
         templateData.uid = uid + uidCounter++
 
@@ -1743,12 +1743,12 @@
        * Gets the current timer's minimum resolution (secs).
        */
       function getRes (unit) {
-        var measured
-        var begin
-        var count = 30
-        var divisor = 1e3
-        var ns = timer.ns
-        var sample = []
+        let measured
+        let begin
+        let count = 30
+        let divisor = 1e3
+        const ns = timer.ns
+        const sample = []
 
         // Get average smallest measurable time.
         while (count--) {
@@ -1837,12 +1837,12 @@
     function compute (bench, options) {
       options || (options = {})
 
-      var async = options.async
-      var elapsed = 0
-      var initCount = bench.initCount
-      var minSamples = bench.minSamples
-      var queue = []
-      var sample = bench.stats.sample
+      const async = options.async
+      let elapsed = 0
+      const initCount = bench.initCount
+      const minSamples = bench.minSamples
+      const queue = []
+      const sample = bench.stats.sample
 
       /**
        * Adds a clone to the queue.
@@ -1863,8 +1863,8 @@
        * Updates the clone/original benchmarks to keep their data in sync.
        */
       function update (event) {
-        var clone = this
-        var type = event.type
+        const clone = this
+        const type = event.type
 
         if (bench.running) {
           if (type == 'start') {
@@ -1893,21 +1893,21 @@
        * Determines if more clones should be queued or if cycling should stop.
        */
       function evaluate (event) {
-        var critical
-        var df
-        var mean
-        var moe
-        var rme
-        var sd
-        var sem
-        var variance
-        var clone = event.target
-        var done = bench.aborted
-        var now = _.now()
-        var size = sample.push(clone.times.period)
-        var maxedOut = size >= minSamples && (elapsed += now - clone.times.timeStamp) / 1e3 > bench.maxTime
-        var times = bench.times
-        var varOf = function (sum, x) { return sum + pow(x - mean, 2) }
+        let critical
+        let df
+        let mean
+        let moe
+        let rme
+        let sd
+        let sem
+        let variance
+        const clone = event.target
+        let done = bench.aborted
+        const now = _.now()
+        let size = sample.push(clone.times.period)
+        let maxedOut = size >= minSamples && (elapsed += now - clone.times.timeStamp) / 1e3 > bench.maxTime
+        const times = bench.times
+        const varOf = function (sum, x) { return sum + pow(x - mean, 2) }
 
         // Exit early for aborted or unclockable tests.
         if (done || clone.hz == Infinity) {
@@ -1990,21 +1990,21 @@
     function cycle (clone, options) {
       options || (options = {})
 
-      var deferred
+      let deferred
       if (clone instanceof Deferred) {
         deferred = clone
         clone = clone.benchmark
       }
-      var clocked
-      var cycles
-      var divisor
-      var event
-      var minTime
-      var period
-      var async = options.async
-      var bench = clone._original
-      var count = clone.count
-      var times = clone.times
+      let clocked
+      let cycles
+      let divisor
+      let event
+      let minTime
+      let period
+      const async = options.async
+      const bench = clone._original
+      let count = clone.count
+      const times = clone.times
 
       // Continue, if not aborted between cycles.
       if (clone.running) {
@@ -2096,8 +2096,8 @@
      * bench.run({ 'async': true });
      */
     function run (options) {
-      var bench = this
-      var event = Event('start')
+      const bench = this
+      const event = Event('start')
 
       // Set `running` to `false` so `reset()` won't call `abort()`.
       bench.running = false
@@ -2761,9 +2761,9 @@
 
     // Add lodash methods as Suite methods.
     _.each(['each', 'forEach', 'indexOf', 'map', 'reduce'], function (methodName) {
-      var func = _[methodName]
+      const func = _[methodName]
       Suite.prototype[methodName] = function () {
-        var args = [this]
+        const args = [this]
         push.apply(args, arguments)
         return func.apply(_, args)
       }
@@ -2772,11 +2772,11 @@
     // Avoid array-like object bugs with `Array#shift` and `Array#splice`
     // in Firefox < 10 and IE < 9.
     _.each(['pop', 'shift', 'splice'], function (methodName) {
-      var func = arrayRef[methodName]
+      const func = arrayRef[methodName]
 
       Suite.prototype[methodName] = function () {
-        var value = this
-        var result = func.apply(value, arguments)
+        const value = this
+        const result = func.apply(value, arguments)
 
         if (value.length === 0) {
           delete value[0]
@@ -2788,7 +2788,7 @@
     // Avoid buggy `Array#unshift` in IE < 8 which doesn't return the new
     // length of the array.
     Suite.prototype.unshift = function () {
-      var value = this
+      const value = this
       unshift.apply(value, arguments)
       return value.length
     }
@@ -2809,7 +2809,7 @@
       })
     })
   } else {
-    var Benchmark = runInContext()
+    const Benchmark = runInContext()
 
     // Check for `exports` after `define` in case a build optimizer adds an `exports` object.
     if (freeExports && freeModule) {

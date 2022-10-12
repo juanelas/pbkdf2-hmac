@@ -15,11 +15,8 @@ const pkgJson = require(path.join(rootDir, 'package.json'))
 const mochaTsRelativeDir = pkgJson.directories['mocha-ts']
 const tempDir = path.join(rootDir, mochaTsRelativeDir)
 
-// const mochaTsRelativeDir = '.mocha-ts'
-// const semaphorePath = `${tempDir}/semaphore`
-
 global.chai = chai
-// global._pkg = require('#pkg')
+global.IS_BROWSER = false
 
 const watch = process.argv.includes('--watch') || process.argv.includes('-w')
 
@@ -48,7 +45,7 @@ exports.mochaHooks = {
         // reset any transpiled module (just delete the cache so it is fully reloaded)
         for (const key in require.cache) {
           const relativePath = path.relative(rootDir, key)
-          if (relativePath.startsWith(`.mocha-ts${path.sep}`)) {
+          if (relativePath.startsWith(`.mocha-ts${path.sep}`) || relativePath.startsWith(`dist${path.sep}`)) {
             delete require.cache[key]
           }
         }
