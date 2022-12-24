@@ -20,7 +20,7 @@ PBKDF2 following RFC 2898 using HMAC (with SHA-1, SHA-256, SHA-384, SHA-512) as 
 
 #### Defined in
 
-[index.ts:12](https://github.com/juanelas/pbkdf2-hmac/blob/8c72388/src/ts/index.ts#L12)
+[index.ts:12](https://github.com/juanelas/pbkdf2-hmac/blob/212548e/src/ts/index.ts#L12)
 
 ## Functions
 
@@ -50,4 +50,4 @@ an ArrayBuffer with the derived key
 
 #### Defined in
 
-[index.ts:41](https://github.com/juanelas/pbkdf2-hmac/blob/8c72388/src/ts/index.ts#L41)
+[index.ts:41](https://github.com/juanelas/pbkdf2-hmac/blob/212548e/src/ts/index.ts#L41)

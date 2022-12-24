@@ -2,7 +2,7 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Node.js CI](https://github.com/juanelas/pbkdf2-hmac/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/juanelas/pbkdf2-hmac/actions/workflows/build-and-test.yml)
-undefined
+[![Coverage Status](https://coveralls.io/repos/github/juanelas/pbkdf2-hmac/badge.svg?branch=main)](https://coveralls.io/github/juanelas/pbkdf2-hmac?branch=main)
 
 # pbkdf2-hmac
 
