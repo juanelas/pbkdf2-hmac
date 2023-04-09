@@ -7,7 +7,7 @@
 /**
  * A TypedArray object describes an array-like view of an underlying binary data buffer.
  */
-type TypedArray = Int8Array|Uint8Array|Uint8ClampedArray|Int16Array|Uint16Array|Int32Array|Uint32Array|Float32Array|Float64Array|BigInt64Array|BigUint64Array
+type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array | BigInt64Array | BigUint64Array
 
 export type HashAlg = 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512'
 
@@ -56,10 +56,10 @@ export default function pbkdf2Hmac (P: string | ArrayBuffer | TypedArray | DataV
     if (IS_BROWSER) {
       crypto.subtle.importKey('raw', P, 'PBKDF2', false, ['deriveBits']).then(
         (PKey) => {
-          const params = { name: 'PBKDF2', hash: hash, salt: S, iterations: c } // pbkdf2 params
+          const params = { name: 'PBKDF2', hash, salt: S, iterations: c } // pbkdf2 params
           crypto.subtle.deriveBits(params, PKey, dkLen * 8).then(
             derivedKey => resolve(derivedKey),
-            // eslint-disable-next-line node/handle-callback-err
+            // eslint-disable-next-line n/handle-callback-err
             err => {
               // Try our native implementation if browser's native one fails (firefox one fails when dkLen > 256)
               _pbkdf2(P as TypedArray | DataView, S as Uint8Array, c, dkLen, hash).then(
