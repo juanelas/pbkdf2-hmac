@@ -32,7 +32,7 @@ import pbkdf2Hmac from 'pbkdf2-hmac'
 
 The appropriate version for browser or node is automatically exported.
 
-You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/main/dist/bundles/iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/main/dist/bundles/esm.min.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/main/dist/bundles/umd.js) and manually add it to your project, or, if you have already installed `pbkdf2-hmac` in your project, just get the bundles from `node_modules/pbkdf2-hmac/dist/bundles/`.
+You can also download the [IIFE bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/main/dist/bundle.iife.js), the [ESM bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/main/dist/bundle.esm.min.js) or the [UMD bundle](https://raw.githubusercontent.com/juanelas/pbkdf2-hmac/main/dist/bundle.umd.js) and manually add it to your project, or, if you have already installed `pbkdf2-hmac` in your project, just get the bundles from `node_modules/pbkdf2-hmac/dist/bundles/`.
 
 An example of usage could be:
 
